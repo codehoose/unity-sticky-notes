@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StickyNoteWorldBugItem : MonoBehaviour
+public class StickyNoteWorldBugItem : MonoBehaviour, IStickyNoteBugItem
 {
     private Text text;
 
@@ -10,13 +10,13 @@ public class StickyNoteWorldBugItem : MonoBehaviour
         text = gameObject.GetComponentInChildren<Text>();    
     }
 
-    public void SetBugText(string bugText)
-    {
-        text.text = bugText;
-    }
-
     public void DestroyMe()
     {
         Destroy(transform.parent.gameObject);
+    }
+
+    public void Set(IStickyNote stickyNote)
+    {
+        text.text = stickyNote.BugText;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,8 +9,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CanvasGroup))]
 public class StickyNoteController : MonoBehaviour
 {
-    Dictionary<StickyNoteWorldBugItem, StickyNote> notes;
-    StickyNoteWorldBugItem currentNote;
+    IStickyNoteSerializer serializer;
+
+    Dictionary<IStickyNoteBugItem, IStickyNote> notes;
+    IStickyNoteBugItem currentNote;
 
     CanvasGroup canvasGroup;
     bool lastInteractable;
@@ -24,7 +27,7 @@ public class StickyNoteController : MonoBehaviour
 
     public InputField bugText;
 
-    public void BugTrigger_Entered(StickyNoteWorldBugItem bugItem)
+    public void BugTrigger_Entered(IStickyNoteBugItem bugItem)
     {
         currentNote = bugItem;
     }
@@ -39,16 +42,17 @@ public class StickyNoteController : MonoBehaviour
         // Spawn a prefab ~ 2m forward of our current position;
         var position = mobile.position + mobile.forward * 2f;
         var gameObject = Instantiate(bugReportPrefab, position, Quaternion.identity);
-        currentNote = gameObject.GetComponentInChildren<StickyNoteWorldBugItem>();
+        currentNote = gameObject.GetByInterfaceInChildren<IStickyNoteBugItem>();
 
         notes[currentNote] = new StickyNote()
         {
-            Position = currentNote.transform.position,
+            Position = position,
             BugText = "Add Text Here",
-            Scene = SceneManager.GetActiveScene().name
+            Scene = SceneManager.GetActiveScene().name,
+            Timestamp = DateTime.Now
         };
 
-        SetCurrentNote(notes[currentNote].BugText);
+        SetCurrentNote(notes[currentNote]);
     }
 
     public void RemoveButton_Click()
@@ -67,16 +71,34 @@ public class StickyNoteController : MonoBehaviour
             return;
 
         notes[currentNote].BugText = bugText.text;
-        SetCurrentNote(bugText.text);
+        SetCurrentNote(notes[currentNote]);
+        serializer.Save(notes.Values);
     }
 
     void Awake()
     {
-        notes = new Dictionary<StickyNoteWorldBugItem, StickyNote>();
+        notes = new Dictionary<IStickyNoteBugItem, IStickyNote>();
         canvasGroup = GetComponent<CanvasGroup>();
+        serializer = gameObject.GetByInterface<IStickyNoteSerializer>();
         lastInteractable = canvasGroup.interactable;
 
+        LoadExistingNotes();
+
         StartCoroutine(WatchInteractable());
+    }
+
+    void LoadExistingNotes()
+    {
+        var existingNotes = serializer.Load();
+
+        foreach (var note in existingNotes)
+        {
+            var gameObject = Instantiate(bugReportPrefab, note.Position, Quaternion.identity);
+
+            var cn = gameObject.GetByInterfaceInChildren<IStickyNoteBugItem>();
+            notes[cn] = note;
+            cn.Set(note);
+        }
     }
 
     void Start()
@@ -85,12 +107,12 @@ public class StickyNoteController : MonoBehaviour
         stickyNoteMoble.controller = this;
     }
 
-    void SetCurrentNote(string bugText)
+    void SetCurrentNote(IStickyNote bug)
     {
         if (currentNote == null)
             return;
 
-        currentNote.SetBugText(bugText);
+        currentNote.Set(bug);
     }
 
     IEnumerator WatchInteractable()
