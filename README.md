@@ -5,32 +5,7 @@ Purpose:
 * Bake bug reporting directly into your game
 * Illustrate to fellow developers where the issues are
 
-Here's the plan for the videos:
-
-Video #1
-User interface to create, update, delete sticky notes
-- Prefab for user interface with Canvas Group
-- Standard UI buttons for actions
-- Text boxes for input / display
-
-Things we need to store:
-- Postion in the game
-- The name of the scene
-- Bug report text
-
-Prefab for Note
-- Collision detection to show information
-- Arrow to say "Here's a note!"
-
-Video #2
-Serializing the sticky notes
-- Read / write from disk per scene
-- Saving changes
-
-Video #3
-Moving the data to the cloud
-- Web service setup
-- Reading, writing to and from the web service
+See TODO.md for the plan / video schedule.
 
 # BEFORE YOU START
 
