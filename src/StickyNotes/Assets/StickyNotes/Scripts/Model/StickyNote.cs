@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class StickyNote : IStickyNote
 {
+    public int Id { get; set; }
+
     public string Scene { get; set; }
 
     public string BugText { get; set; }

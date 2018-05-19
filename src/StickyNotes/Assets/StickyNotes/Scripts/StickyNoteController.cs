@@ -46,6 +46,7 @@ public class StickyNoteController : MonoBehaviour
 
         notes[currentNote] = new StickyNote()
         {
+            Id = -1,
             Position = position,
             BugText = "Add Text Here",
             Scene = SceneManager.GetActiveScene().name,
@@ -60,6 +61,7 @@ public class StickyNoteController : MonoBehaviour
         if (currentNote == null)
             return;
 
+        serializer.Delete(notes[currentNote]);
         notes.Remove(currentNote);
         currentNote.DestroyMe();
         currentNote = null;
@@ -72,7 +74,7 @@ public class StickyNoteController : MonoBehaviour
 
         notes[currentNote].BugText = bugText.text;
         SetCurrentNote(notes[currentNote]);
-        serializer.Save(notes.Values);
+        serializer.Save(notes[currentNote], notes.Values);
     }
 
     void Awake()
@@ -82,9 +84,20 @@ public class StickyNoteController : MonoBehaviour
         serializer = gameObject.GetByInterface<IStickyNoteSerializer>();
         lastInteractable = canvasGroup.interactable;
 
-        LoadExistingNotes();
-
         StartCoroutine(WatchInteractable());
+    }
+
+    IEnumerator Start()
+    {
+        var stickyNoteMoble = mobile.gameObject.AddComponent<StickyNoteMobile>();
+        stickyNoteMoble.controller = this;
+
+        while (!serializer.IsReady)
+        {
+            yield return null;
+        }
+
+        LoadExistingNotes();
     }
 
     void LoadExistingNotes()
@@ -99,12 +112,6 @@ public class StickyNoteController : MonoBehaviour
             notes[cn] = note;
             cn.Set(note);
         }
-    }
-
-    void Start()
-    {
-        var stickyNoteMoble = mobile.gameObject.AddComponent<StickyNoteMobile>();
-        stickyNoteMoble.controller = this;
     }
 
     void SetCurrentNote(IStickyNote bug)

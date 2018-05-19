@@ -302,6 +302,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AlwaysFaceCamera.cs" />
     <Compile Include="Assets\Scripts\TextMeshStickyNoteBugItem.cs" />
     <Compile Include="Assets\Scripts\ToggleUI.cs" />
     <Compile Include="Assets\StickyNotes\GameObjectExtensions.cs" />
@@ -312,8 +313,11 @@
     <Compile Include="Assets\StickyNotes\Scripts\Serialization\JsonStickyNote.cs" />
     <Compile Include="Assets\StickyNotes\Scripts\Serialization\JsonNoteCollection.cs" />
     <Compile Include="Assets\StickyNotes\Scripts\StickNotesLocalDiskSerializer.cs" />
+    <Compile Include="Assets\StickyNotes\Scripts\StickyNoteAdapter.cs" />
     <Compile Include="Assets\StickyNotes\Scripts\StickyNoteController.cs" />
+    <Compile Include="Assets\StickyNotes\Scripts\StickyNoteJson.cs" />
     <Compile Include="Assets\StickyNotes\Scripts\StickyNoteMobile.cs" />
+    <Compile Include="Assets\StickyNotes\Scripts\StickyNoteWebSerializer.cs" />
     <Compile Include="Assets\StickyNotes\Scripts\StickyNoteWorldBugItem.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

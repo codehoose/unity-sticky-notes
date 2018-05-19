@@ -1,0 +1,9 @@
+{
+    "rows":
+    [
+        { 
+            "id": -1, 
+            "scene": "fred",
+            "bugtext": "fred","x":9.999 }
+    ]
+}

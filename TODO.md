@@ -31,5 +31,15 @@ Video #2
 
 Video #3
 	Moving the data to the cloud
-	- Web service setup
-	- Reading, writing to and from the web service
+	- ------Web service setup 
+	- ------Reading, writing to and from the web service
+	- ------Add 'id' to StickyNote
+	- ------Implement delete
+	- ------Interface for serialization
+	- ------Filter for scene name
+	- ------Save just the values that have changed?
+
+	- Refactor serialization taking web into account
+	- Refactor position fields
+	- URL Encode scene name
+

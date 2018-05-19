@@ -2,7 +2,11 @@
 
 public interface IStickyNoteSerializer
 {
-    void Save(IEnumerable<IStickyNote> notes);
+    bool IsReady { get; }
+
+    void Save(IStickyNote current, IEnumerable<IStickyNote> notes);
 
     IEnumerable<IStickyNote> Load();
+
+    void Delete(IStickyNote stickyNote);
 }
